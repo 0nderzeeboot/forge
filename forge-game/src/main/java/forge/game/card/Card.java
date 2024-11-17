@@ -91,7 +91,7 @@ public class Card extends GameEntity implements Comparable<Card>, IHasSVars, ITr
     private CardDamageHistory damageHistory = new CardDamageHistory();
     // Hidden keywords won't be displayed on the card
     // x=timestamp y=StaticAbility id
-    private final Table<Long, Long, List<String>> hiddenExtrinsicKeywords = TreeBasedTable.create();
+    private final Table<Long, Long, List<String>> hiddenExtrinsicKeywords = Tables.synchronizedTable(TreeBasedTable.create());
 
     // cards attached or otherwise linked to this card
     private CardCollection hauntedBy, devouredCards, exploitedCards, delvedCards, imprintedCards,
@@ -120,46 +120,46 @@ public class Card extends GameEntity implements Comparable<Card>, IHasSVars, ITr
 
     protected CardChangedType changedTypeByText; // Layer 3 by Text Change
     // x=timestamp y=StaticAbility id
-    private final Table<Long, Long, CardChangedType> changedCardTypesByText = TreeBasedTable.create(); // Layer 3
-    private final Table<Long, Long, CardChangedType> changedCardTypesCharacterDefining = TreeBasedTable.create(); // Layer 4 CDA
-    private final Table<Long, Long, CardChangedType> changedCardTypes = TreeBasedTable.create(); // Layer 4
+    private final Table<Long, Long, CardChangedType> changedCardTypesByText = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 3
+    private final Table<Long, Long, CardChangedType> changedCardTypesCharacterDefining = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 4 CDA
+    private final Table<Long, Long, CardChangedType> changedCardTypes = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 4
 
-    private final Table<Long, Long, CardChangedName> changedCardNames = TreeBasedTable.create(); // Layer 3
-    private final Table<Long, Long, KeywordsChange> changedCardKeywordsByText = TreeBasedTable.create(); // Layer 3 by Text Change
+    private final Table<Long, Long, CardChangedName> changedCardNames = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 3
+    private final Table<Long, Long, KeywordsChange> changedCardKeywordsByText = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 3 by Text Change
     protected KeywordsChange changedCardKeywordsByWord = new KeywordsChange(ImmutableList.<KeywordInterface>of(), ImmutableList.<KeywordInterface>of(), false); // Layer 3 by Word Change
-    private final Table<Long, Long, KeywordsChange> changedCardKeywords = TreeBasedTable.create(); // Layer 6
+    private final Table<Long, Long, KeywordsChange> changedCardKeywords = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 6
 
     // stores the keywords created by static abilities
     private final Map<Triple<String, Long, Long>, KeywordInterface> storedKeywords = Maps.newHashMap();
 
     // x=timestamp y=StaticAbility id
-    private final Table<Long, Long, CardTraitChanges> changedCardTraitsByText = TreeBasedTable.create(); // Layer 3 by Text Change
-    private final Table<Long, Long, CardTraitChanges> changedCardTraits = TreeBasedTable.create(); // Layer 6
+    private final Table<Long, Long, CardTraitChanges> changedCardTraitsByText = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 3 by Text Change
+    private final Table<Long, Long, CardTraitChanges> changedCardTraits = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 6
 
     // stores the card traits created by static abilities
-    private final Table<StaticAbility, String, SpellAbility> storedSpellAbility = TreeBasedTable.create();
-    private final Table<StaticAbility, String, Trigger> storedTrigger = TreeBasedTable.create();
-    private final Table<StaticAbility, String, ReplacementEffect> storedReplacementEffect = TreeBasedTable.create();
-    private final Table<StaticAbility, String, StaticAbility> storedStaticAbility = TreeBasedTable.create();
+    private final Table<StaticAbility, String, SpellAbility> storedSpellAbility = Tables.synchronizedTable(TreeBasedTable.create());
+    private final Table<StaticAbility, String, Trigger> storedTrigger = Tables.synchronizedTable(TreeBasedTable.create());
+    private final Table<StaticAbility, String, ReplacementEffect> storedReplacementEffect = Tables.synchronizedTable(TreeBasedTable.create());
+    private final Table<StaticAbility, String, StaticAbility> storedStaticAbility = Tables.synchronizedTable(TreeBasedTable.create());
 
-    private final Table<StaticAbility, SpellAbility, SpellAbility> storedSpellAbililityByText = HashBasedTable.create();
-    private final Table<StaticAbility, String, SpellAbility> storedSpellAbililityGainedByText = TreeBasedTable.create();
-    private final Table<StaticAbility, Trigger, Trigger> storedTriggerByText = HashBasedTable.create();
-    private final Table<StaticAbility, ReplacementEffect, ReplacementEffect> storedReplacementEffectByText = HashBasedTable.create();
-    private final Table<StaticAbility, StaticAbility, StaticAbility> storedStaticAbilityByText = HashBasedTable.create();
+    private final Table<StaticAbility, SpellAbility, SpellAbility> storedSpellAbililityByText = Tables.synchronizedTable(HashBasedTable.create());
+    private final Table<StaticAbility, String, SpellAbility> storedSpellAbililityGainedByText = Tables.synchronizedTable(TreeBasedTable.create());
+    private final Table<StaticAbility, Trigger, Trigger> storedTriggerByText = Tables.synchronizedTable(HashBasedTable.create());
+    private final Table<StaticAbility, ReplacementEffect, ReplacementEffect> storedReplacementEffectByText = Tables.synchronizedTable(HashBasedTable.create());
+    private final Table<StaticAbility, StaticAbility, StaticAbility> storedStaticAbilityByText = Tables.synchronizedTable(HashBasedTable.create());
 
     private final Map<Triple<String, Long, Long>, KeywordInterface> storedKeywordByText = Maps.newHashMap();
 
     // x=timestamp y=StaticAbility id
-    private final Table<Long, Long, CardColor> changedCardColorsByText = TreeBasedTable.create(); // Layer 3 by Text Change
-    private final Table<Long, Long, CardColor> changedCardColorsCharacterDefining = TreeBasedTable.create(); // Layer 5 CDA
-    private final Table<Long, Long, CardColor> changedCardColors = TreeBasedTable.create(); // Layer 5
+    private final Table<Long, Long, CardColor> changedCardColorsByText = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 3 by Text Change
+    private final Table<Long, Long, CardColor> changedCardColorsCharacterDefining = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 5 CDA
+    private final Table<Long, Long, CardColor> changedCardColors = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 5
 
-    protected final Table<Long, Long, ManaCost> changedCardManaCost = TreeBasedTable.create(); // Layer 3
+    protected final Table<Long, Long, ManaCost> changedCardManaCost = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 3
 
     private final NavigableMap<Long, CardCloneStates> clonedStates = Maps.newTreeMap(); // Layer 1
 
-    private final Table<Long, Long, Map<String, String>> changedSVars = TreeBasedTable.create();
+    private final Table<Long, Long, Map<String, String>> changedSVars = Tables.synchronizedTable(TreeBasedTable.create());
 
     private final Map<Long, PlayerCollection> mayLook = Maps.newHashMap();
     private final PlayerCollection mayLookFaceDownExile = new PlayerCollection();
@@ -262,10 +262,10 @@ public class Card extends GameEntity implements Comparable<Card>, IHasSVars, ITr
 
     // stack of set power/toughness
     // x=timestamp y=StaticAbility id
-    private Table<Long, Long, Pair<Integer,Integer>> newPTText = TreeBasedTable.create(); // Text Change Layer 3
-    private Table<Long, Long, Pair<Integer,Integer>> newPTCharacterDefining = TreeBasedTable.create(); // Layer 7a
-    private Table<Long, Long, Pair<Integer,Integer>> newPT = TreeBasedTable.create(); // Layer 7b
-    private Table<Long, Long, Pair<Integer,Integer>> boostPT = TreeBasedTable.create(); // Layer 7c
+    private Table<Long, Long, Pair<Integer,Integer>> newPTText = Tables.synchronizedTable(TreeBasedTable.create()); // Text Change Layer 3
+    private Table<Long, Long, Pair<Integer,Integer>> newPTCharacterDefining = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 7a
+    private Table<Long, Long, Pair<Integer,Integer>> newPT = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 7b
+    private Table<Long, Long, Pair<Integer,Integer>> boostPT = Tables.synchronizedTable(TreeBasedTable.create()); // Layer 7c
 
     private final Map<Card, Integer> assignedDamageMap = Maps.newTreeMap();
     private Map<Integer, Integer> damage = Maps.newHashMap();
@@ -349,10 +349,10 @@ public class Card extends GameEntity implements Comparable<Card>, IHasSVars, ITr
     private final Map<SpellAbility, List<String>> chosenModesYourCombat = Maps.newHashMap();
     private final Map<SpellAbility, List<String>> chosenModesYourLastCombat = Maps.newHashMap();
 
-    private final Table<SpellAbility, StaticAbility, List<String>> chosenModesTurnStatic = HashBasedTable.create();
-    private final Table<SpellAbility, StaticAbility, List<String>> chosenModesGameStatic = HashBasedTable.create();
-    private final Table<SpellAbility, StaticAbility, List<String>> chosenModesYourCombatStatic = HashBasedTable.create();
-    private final Table<SpellAbility, StaticAbility, List<String>> chosenModesYourLastCombatStatic = HashBasedTable.create();
+    private final Table<SpellAbility, StaticAbility, List<String>> chosenModesTurnStatic = Tables.synchronizedTable(HashBasedTable.create());
+    private final Table<SpellAbility, StaticAbility, List<String>> chosenModesGameStatic = Tables.synchronizedTable(HashBasedTable.create());
+    private final Table<SpellAbility, StaticAbility, List<String>> chosenModesYourCombatStatic = Tables.synchronizedTable(HashBasedTable.create());
+    private final Table<SpellAbility, StaticAbility, List<String>> chosenModesYourLastCombatStatic = Tables.synchronizedTable(HashBasedTable.create());
 
     private CombatLki combatLKI;
 
