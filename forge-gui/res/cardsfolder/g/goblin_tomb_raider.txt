@@ -4,4 +4,5 @@ Types:Creature Goblin Pirate
 PT:1/2
 S:Mode$ Continuous | Affected$ Card.Self | AddPower$ 1 | IsPresent$ Artifact.YouCtrl | AddKeyword$ Haste | Description$ As long as you control an artifact, CARDNAME gets +1/+0 and has haste.
 DeckHints:Type$Artifact
+SVar:PlayMain1:TRUE
 Oracle:As long as you control an artifact, Goblin Tomb Raider gets +1/+0 and has haste.
